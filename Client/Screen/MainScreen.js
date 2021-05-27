@@ -2,28 +2,40 @@ import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-import  logo  from './images/pill.png';
-import  MyPillLogo  from './images/pills-bottle.png';
-import { Button } from 'react-native-elements/dist/buttons/Button';
-
 import AsyncStorage from '@react-native-community/async-storage';
+
 import * as config from '../src/config';
+import  logo  from './images/pill.png';
+import  MyPillLogo  from '../src/icon/pills-bottle.png';
 
-
-export function MainScreen(props) {
+export function MainScreen() {
 
     const navigation = useNavigation();
     const [myPillText, setMyPillText] = useState('');
+    const [myPillNum, setMyPillNum] = useState('')
     const [navScreen, setNavScreen] = useState('');
 
+    // 메인 스크린
+    // 토큰 유무 확인 -> 토큰 있으면 유저이름, 즐겨찾기 된 알약 수 포함해서 렌더링
     useEffect(() => {
-        AsyncStorage.getItem('token', (err, result) => {
-            if (result !== null) {
+        AsyncStorage.getItem('token', (err, token) => {
+            if (token !== null) {
                 config.IS_LOGIN = true;
-                setMyPillText("지원님의 약통");
-                setNavScreen("MyPill")
-                console.log(config.IS_LOGIN);
+                fetch("http://3.34.96.230/favorite", {
+                    method : "GET",
+                    headers : {
+                        'Content-Type' : 'application/json',
+                        Authorization : `Bearer ${token}`
+                    },
+                }).then(res => res.json())
+                .then(response => { 
+                    console.log(response)
+                    setMyPillText(response.name + "님의 약통");
+                    setMyPillNum(response.numOfPill);
+                    setNavScreen("MyPill")
+                    console.log(config.IS_LOGIN);
+                })
+                .catch(error => console.error('Error:', error));
             } else {
                 config.IS_LOGIN = false;
                 setMyPillText("내 약통");
@@ -64,7 +76,6 @@ export function MainScreen(props) {
                     }}>
                     <Text style={styles.SearchButton}>알약 이름을 알고 계신가요?</Text>
                     <View style={styles.hr} />
-
                 </TouchableOpacity>
             </View>
             <View style={styles.MyPillButtonView}>
@@ -78,11 +89,10 @@ export function MainScreen(props) {
                             source={MyPillLogo}/>
                     </View>
                     <Text style={styles.MyPillButtonText}>{myPillText}</Text>
-                    <Text style={styles.MyPillNumText}>{'>'}</Text>
+                    <Text style={styles.MyPillNumText}>{myPillNum + ' >'}</Text>
                 </TouchableOpacity>
             </View>
         </View>
-        
     )
 }
 
@@ -99,7 +109,6 @@ const styles = StyleSheet.create({
     },
     Text: {
         width: 287,
-        // height: 78,
         // fontFamily: 'AppleSDGothicNeo',
         fontSize: 32,
         fontWeight: '300',
@@ -107,21 +116,17 @@ const styles = StyleSheet.create({
         letterSpacing: -0.64,
         textAlign: 'left',
         color: '#525252'
-
     }, 
-
     MainButtonView : {
         flex : 3,
         alignItems: 'center',
         justifyContent : 'center',
     },
-
     LogoImage : {
         width: 121,
         height: 121,
         marginBottom : 38
     },
-    
     MainButtonContainer : {
         alignItems: 'center',
         justifyContent : 'center',
@@ -134,7 +139,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#D5D5D5'
     },
-
     MainButton : {
         width: 256,
         height: 56,
@@ -153,7 +157,6 @@ const styles = StyleSheet.create({
         letterSpacing: -0.48,
         textAlign: 'left',
         color: '#ffffff'
-
     },
     searchText: {
         marginTop: 15,
@@ -182,7 +185,6 @@ const styles = StyleSheet.create({
         marginRight : 15,
         alignItems: 'center',
         justifyContent : 'center',
-
     },
     MyPillLogoImage : {
         width: 36,
@@ -192,7 +194,7 @@ const styles = StyleSheet.create({
         width: 165,
         height: 29,
         // fontFamily: 'AppleSDGothicNeo',
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: 'bold',
         fontStyle: 'normal',
         letterSpacing: -0.48,
@@ -203,10 +205,9 @@ const styles = StyleSheet.create({
         width: 26,
         height: 24,
         // fontFamily: "AppleSDGothicNeo",
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: "100",
         fontStyle: "normal",
-        letterSpacing: -0.4,
         textAlign: "left",
         color: "#404040"
     },

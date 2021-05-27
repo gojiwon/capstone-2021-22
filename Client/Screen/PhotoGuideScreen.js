@@ -6,8 +6,8 @@ import guide from './images/guide.png';
 
 class PhotoGuideScreen extends Component {
     
+    // 알약 촬영 가이드 스크린
     render () { 
-
         return (
             <View style={styles.MainView}>
                 <Image
@@ -18,18 +18,13 @@ class PhotoGuideScreen extends Component {
                     <TouchableOpacity 
                         style={styles.Button}
                         onPress={()=>{
-                            this.props.navigation.reset({
-                                index: 0,
-                                routes: [{name: "Photo"}]
-                            })
+                            this.props.navigation.navigate('Photo')
                     }}>
                         <Text style={styles.ButtonText}>촬영하기</Text>
                     </TouchableOpacity>
                 </View>
 
             </View>
-             
-            
         )
     }
 }
@@ -70,9 +65,7 @@ const styles = StyleSheet.create({
         letterSpacing: -0.48,
         textAlign: "center",
         color: "#c86e65"
-
     },
-
 });
 
 export default PhotoGuideScreen;

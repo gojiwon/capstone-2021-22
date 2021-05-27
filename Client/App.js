@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
-import React, { Component, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TextComponent, Image, Button, TouchableOpacity } from 'react-native';
+import React, { Component } from 'react';
+import { Image, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -13,14 +13,15 @@ import RegisterFinishScreen from './screen/RegisterFinishScreen';
 import SearchScreen from './screen/SearchScreen';
 import SearchFailScreen from './screen/SearchFailScreen';
 import MyPillScreen from './screen/MyPillScreen';
-import MyPillDetailScreen from './screen/MyPillDetailScreen';
+import PillDetailScreen from './screen/PillDetailScreen';
 import PhotoGuideScreen from './screen/PhotoGuideScreen';
 import PhotoScreen from './screen/PhotoScreen';
-import ConfirmScreen from './screen/ConfirmScreen';
+import LoadingScreen from './screen/LoadingScreen';
+import PhotoSearchScreen from './screen/PhotoSearchScreen';
 
 const Stack = createStackNavigator();
 
-
+// 헤더 뒤로가기 아이콘 변경
 function BackBtn() {
     return (
         <Image
@@ -98,9 +99,6 @@ class App extends Component
                         headerLeft: () => (
                             <TouchableOpacity
                             onPress={()=>{
-                                // AsyncStorage.getItem('user').then((value) =>
-                                //     navigation.replace(value === null ? 'Main' : 'UserMain'),
-                                // );
                                 navigation.reset({routes: [{name: 'Main'}]})
                             }}>
                                 <Image
@@ -124,8 +122,7 @@ class App extends Component
                             fontSize: 20,
                             color: "#707070"
                         },
-                        headerBackTitleVisible: false,
-                        headerBackImage: BackBtn,
+                        headerShown : false
                     }}
                     />
 
@@ -147,23 +144,34 @@ class App extends Component
                     <Stack.Screen
                     name="MyPill"
                     component={MyPillScreen}
-                    options={{ 
-                        title: '내약통' ,
+                    options={({ navigation }) => ({ 
+                        title: '내 약통' ,
                         headerTitleStyle: {
                             fontWeight: 'bold',
                             fontSize: 20,
                             color: "#707070"
                         },
                         headerBackTitleVisible: false,
-                        headerBackImage: BackBtn,
-                    }}
+                        headerLeft: () => (
+                            <TouchableOpacity
+                            onPress={()=>{
+                                navigation.reset({routes: [{name: 'Main'}]})
+                            }}>
+                                <Image
+                                    source={require('./src/icon/back.png')}
+                                    style={{marginLeft: 16, width: 24, height: 24}}
+                                />
+                            </TouchableOpacity>
+                             
+                        ),
+                    })}
                     />
 
                     <Stack.Screen
-                    name="MyPillDetail"
-                    component={MyPillDetailScreen}
+                    name="PillDetail"
+                    component={PillDetailScreen}
                     options={{ 
-                        title: '내약통' ,
+                        title: '알약 정보' ,
                         headerTitleStyle: {
                             fontWeight: 'bold',
                             fontSize: 20,
@@ -205,8 +213,8 @@ class App extends Component
                     />
 
                     <Stack.Screen
-                    name="Confirm"
-                    component={ConfirmScreen}
+                    name="Loading"
+                    component={LoadingScreen}
                     options={{ 
                         title: '알약 촬영' ,
                         headerTitleStyle: {
@@ -214,9 +222,33 @@ class App extends Component
                             fontSize: 20,
                             color: "#707070"
                         },
-                        headerBackTitleVisible: false,
-                        headerBackImage: BackBtn,
+                        headerShown: false
                     }}
+                    />
+
+                    <Stack.Screen
+                    name="PhotoSearch"
+                    component={PhotoSearchScreen}
+                    options={({ navigation }) => ({ 
+                        title: '알약 정보' ,
+                        headerTitleStyle: {
+                            fontWeight: 'bold',
+                            fontSize: 20,
+                            color: "#707070"
+                        },
+                        headerBackTitleVisible: false,
+                        headerLeft: () => (
+                            <TouchableOpacity
+                            onPress={()=>{
+                                navigation.reset({routes: [{name: 'Main'}]})
+                            }}>
+                                <Image
+                                    source={require('./src/icon/home.png')}
+                                    style={{marginLeft: 16, width: 24, height: 24}}
+                                />
+                            </TouchableOpacity>
+                        ),
+                    })}
                     />
 
                 </Stack.Navigator>
@@ -225,8 +257,5 @@ class App extends Component
         )
     }
 }
-
-const styles = StyleSheet.create({
-});
 
 export default App;

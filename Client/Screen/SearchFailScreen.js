@@ -3,24 +3,24 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 class SearchFailScreen extends Component {
+
+    // 사진으로 검색 실패했을 경우 보여지는 스크린
     render(){
         return (
             <View style={styles.MainView}>              
                 <Text style={styles.mainText}>알약을 찾지 못했습니다.</Text>
                 <Text style={styles.subText}>알약의 <Text style={styles.highlight}>모양</Text>과 <Text style={styles.highlight}>식별문구</Text>가 잘 나오게 찍어주세요.</Text>
-
-                    <TouchableOpacity 
-                        style={styles.mainButton}
-                        onPress={()=>{
-                            this.props.navigation.reset({
-                                index: 0,
-                                routes: [{name: "PhotoGuide"}]
-                            })
-                    }}>
-                        <Text style={styles.mainButtonText}>다시 촬영하기</Text>
-                    </TouchableOpacity>
-                    <View style={styles.ButtonView}>
-
+                <TouchableOpacity 
+                    style={styles.mainButton}
+                    onPress={()=>{
+                        this.props.navigation.reset({
+                            index: 0,
+                            routes: [{name: "PhotoGuide"}]
+                        })
+                }}>
+                    <Text style={styles.mainButtonText}>다시 촬영하기</Text>
+                </TouchableOpacity>
+                <View style={styles.ButtonView}>
                     <TouchableOpacity 
                         style={styles.subButton}
                         onPress={()=>{
@@ -31,7 +31,6 @@ class SearchFailScreen extends Component {
                     }}>
                         <Text style={styles.subButtonText}>직접 검색하기</Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity 
                         style={styles.subButton}
                         onPress={()=>{
@@ -43,18 +42,14 @@ class SearchFailScreen extends Component {
                         <Text style={styles.subButtonText}>홈으로 돌아가기</Text>
                     </TouchableOpacity>
                 </View>
-
-            </View>
-                
-            
+            </View>     
         )
     }
-    
 }
 
 const styles = StyleSheet.create({
     MainView : {
-        flex : 1,
+        height: '100%',
         backgroundColor : 'white',
         alignItems: 'center',
         justifyContent : 'center',
@@ -74,7 +69,7 @@ const styles = StyleSheet.create({
         width: 220,
         height: 54,
         // fontFamily: "AppleSDGothicNeo",
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: "300",
         fontStyle: "normal",
         letterSpacing: 0,
@@ -86,8 +81,8 @@ const styles = StyleSheet.create({
         width: 220,
         height: 54,
         // fontFamily: "AppleSDGothicNeo",
-        fontSize: 22,
-        fontWeight: "500",
+        fontSize: 20,
+        fontWeight: "600",
         fontStyle: "normal",
         letterSpacing: 0,
         textAlign: "center",
@@ -117,7 +112,6 @@ const styles = StyleSheet.create({
         letterSpacing: -0.36,
         textAlign: "center",
         color: "#ffffff"
-
     },
     subButton : {
         margin : 5,
@@ -140,9 +134,7 @@ const styles = StyleSheet.create({
         letterSpacing: -0.36,
         textAlign: "center",
         color: "#c86e65"
-
     },
-
 });
 
 export default SearchFailScreen;
